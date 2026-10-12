@@ -49,21 +49,21 @@ body { background: var(--cream); color: var(--ink); font-family: var(--sans); cu
   font-family: var(--serif); font-size: clamp(3rem, 10vw, 9rem);
   font-weight: 300; color: var(--cream); letter-spacing: 0.18em; text-transform: uppercase;
   transform: translateY(110%);
-  animation: slideUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.3s forwards;
+  animation: slideUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.2s forwards;
 }
 .intro-bar {
   width: 0; height: 1px; background: var(--accent); margin: 1.5rem 0 0.8rem;
-  animation: growBar 0.6s ease 0.9s forwards;
+  animation: growBar 0.6s ease 0.8s forwards;
 }
 .intro-sub {
   font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
   color: var(--accent); opacity: 0;
-  animation: fadeIn 0.5s ease 1.6s forwards;
+  animation: fadeIn 0.5s ease 1.4s forwards;
 }
 @keyframes slideUp { to { transform: translateY(0); } }
 @keyframes growBar { to { width: 100px; } }
 @keyframes fadeIn  { to { opacity: 1; } }
-#intro.out { animation: introOut 0.8s cubic-bezier(0.76,0,0.24,1) 3.5s forwards; }
+#intro.out { animation: introOut 0.8s cubic-bezier(0.76,0,0.24,1) 4s forwards; }
 @keyframes introOut { to { transform: translateY(-100%); } }
 
 /* NAV */
