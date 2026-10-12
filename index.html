@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Huey Luu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Outfit:wght@300;400;500;600&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --cream:   #f0ece3;
+  --warm:    #e8e0d0;
+  --ink:     #1a1714;
+  --ink2:    #2e2a26;
+  --muted:   #8a8070;
+  --accent:  #b85c38;
+  --accent2: #4a6741;
+  --border:  rgba(26,23,20,0.1);
+  --serif:   'Cormorant Garamond', Georgia, serif;
+  --sans:    'Outfit', sans-serif;
+  --mono:    'Space Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--cream); color: var(--ink); font-family: var(--sans); cursor: none; overflow-x: hidden; }
+
+#cur {
+  position: fixed; width: 8px; height: 8px; background: var(--accent);
+  border-radius: 50%; pointer-events: none; z-index: 9999;
+  transform: translate(-50%,-50%); mix-blend-mode: multiply;
+}
+#cur-ring {
+  position: fixed; width: 32px; height: 32px; border: 1px solid var(--accent);
+  border-radius: 50%; pointer-events: none; z-index: 9998;
+  transform: translate(-50%,-50%); opacity: 0.45;
+  transition: width .25s, height .25s;
+}
+
+/* INTRO */
+#intro {
+  position: fixed; inset: 0; z-index: 500;
+  background: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+}
+.intro-inner { display: flex; flex-direction: column; align-items: center; overflow: hidden; }
+.intro-name {
+  font-family: var(--serif); font-size: clamp(3rem, 10vw, 9rem);
+  font-weight: 300; color: var(--cream); letter-spacing: 0.18em; text-transform: uppercase;
+  transform: translateY(110%);
+  animation: slideUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.3s forwards;
+}
+.intro-bar {
+  width: 0; height: 1px; background: var(--accent); margin: 1.5rem 0 0.8rem;
+  animation: growBar 0.6s ease 0.9s forwards;
+}
+.intro-sub {
+  font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--accent); opacity: 0;
+  animation: fadeIn 0.5s ease 1.2s forwards;
+}
+@keyframes slideUp { to { transform: translateY(0); } }
+@keyframes growBar { to { width: 100px; } }
+@keyframes fadeIn  { to { opacity: 1; } }
+#intro.out { animation: introOut 0.8s cubic-bezier(0.76,0,0.24,1) 2.3s forwards; }
+@keyframes introOut { to { transform: translateY(-100%); } }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1.5rem 2.5rem;
+  display: flex; justify-content: space-between; align-items: center;
+  opacity: 0; animation: fadeIn 0.6s ease 3s forwards;
+}
+.nav-logo {
+  font-family: var(--serif); font-size: 1.1rem; font-weight: 300;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink); text-decoration: none;
+}
+.nav-links { display: flex; gap: 2.5rem; list-style: none; }
+.nav-links a {
+  font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--muted); text-decoration: none; transition: color .2s;
+}
+.nav-links a:hover { color: var(--accent); }
+
+/* HERO */
+.hero {
+  min-height: 100vh; padding: 8rem 2.5rem 5rem;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  border-bottom: 1px solid var(--border);
+  opacity: 0; animation: fadeIn 0.8s ease 2.8s forwards;
+}
+.hero-meta {
+  display: flex; align-items: center; gap: 1rem; margin-bottom: 3rem;
+  font-family: var(--mono); font-size: 0.62rem;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
+}
+.hero-dot { width: 6px; height: 6px; background: var(--accent2); border-radius: 50%; flex-shrink: 0; }
+.hero-h1 {
+  font-family: var(--serif); font-size: clamp(4rem, 12vw, 12rem);
+  font-weight: 300; line-height: 0.85; letter-spacing: -0.01em; margin-bottom: 4rem;
+}
+.hero-h1 .italic { font-style: italic; color: var(--accent); }
+.hero-footer { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 2rem; }
+.hero-desc {
+  font-size: 0.85rem; line-height: 1.9; color: var(--muted); max-width: 42ch;
+  border-left: 2px solid var(--accent2); padding-left: 1.2rem;
+}
+.hero-ctas { display: flex; gap: 1rem; }
+.btn {
+  font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 0.7rem 1.4rem; text-decoration: none; border-radius: 2px; transition: all .25s;
+}
+.btn-dark { background: var(--ink); color: var(--cream); }
+.btn-dark:hover { background: var(--accent); }
+.btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+.btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+
+/* STATS */
+.stats { display: grid; grid-template-columns: repeat(4,1fr); border-bottom: 1px solid var(--border); }
+.stat {
+  padding: 2.5rem; border-right: 1px solid var(--border);
+  opacity: 0; transform: translateY(16px); transition: opacity .6s, transform .6s;
+}
+.stat:last-child { border-right: none; }
+.stat.on { opacity: 1; transform: none; }
+.stat-num { font-family: var(--serif); font-size: clamp(2.5rem,5vw,4rem); font-weight: 300; line-height: 1; color: var(--accent); margin-bottom: 0.4rem; }
+.stat-label { font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+
+/* TICKER */
+.ticker { overflow: hidden; padding: 0.85rem 0; background: var(--warm); border-bottom: 1px solid var(--border); }
+.ticker-track { display: flex; animation: tick 24s linear infinite; white-space: nowrap; }
+.ticker-item { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); padding: 0 1.8rem; }
+.ticker-sep { color: var(--accent); padding: 0 0.5rem; }
+@keyframes tick { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* SHARED */
+section { border-bottom: 1px solid var(--border); }
+.section-inner { padding: 5rem 2.5rem; }
+.s-tag {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 3rem;
+}
+.s-tag::before { content:''; width: 20px; height: 1px; background: var(--muted); }
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity .65s ease, transform .65s ease; }
+.reveal.on { opacity: 1; transform: none; }
+
+/* ABOUT */
+.about-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 6rem; align-items: start; }
+.about-heading {
+  font-family: var(--serif); font-size: clamp(2.5rem,5vw,4.5rem);
+  font-weight: 300; line-height: 1.05; letter-spacing: -0.01em;
+  position: sticky; top: 2rem;
+}
+.about-heading em { font-style: italic; color: var(--accent); }
+.about-body { font-size: 0.88rem; line-height: 2; color: var(--ink2); margin-bottom: 1.2rem; }
+.about-body strong { color: var(--ink); font-weight: 500; }
+.pill-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2.5rem; }
+.pill {
+  font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.35rem 0.85rem; border: 1px solid var(--border); border-radius: 100px;
+  color: var(--muted); transition: all .2s;
+}
+.pill.hi:hover, .pill.hi { border-color: rgba(184,92,56,0.4); color: var(--accent); background: rgba(184,92,56,0.05); }
+.pill.lo:hover, .pill.lo { border-color: rgba(74,103,65,0.4); color: var(--accent2); background: rgba(74,103,65,0.05); }
+
+/* EDUCATION */
+.edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.edu-card {
+  background: var(--cream); padding: 2.5rem; transition: background .2s, opacity .55s, transform .55s;
+  opacity: 0; transform: translateY(12px);
+}
+.edu-card.on { opacity: 1; transform: none; }
+.edu-card:hover { background: var(--warm); }
+.edu-school { font-family: var(--serif); font-size: 1.6rem; font-weight: 300; margin-bottom: 0.4rem; line-height: 1.15; }
+.edu-deg { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.3rem; line-height: 1.6; }
+.edu-gpa { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.14em; color: var(--accent); margin-bottom: 1rem; }
+.edu-honors { display: flex; flex-direction: column; gap: 0.35rem; margin-top: 1rem; }
+.edu-honors span { font-size: 0.72rem; color: var(--ink2); padding-left: 1rem; position: relative; }
+.edu-honors span::before { content:'✦'; position: absolute; left: 0; font-size: 0.45rem; color: var(--accent); top: 0.2rem; }
+
+/* EXPERIENCE */
+.exp-list { display: flex; flex-direction: column; }
+.exp-item {
+  display: grid; grid-template-columns: 200px 1fr; gap: 3rem;
+  padding: 2.5rem 0; border-top: 1px solid var(--border);
+  opacity: 0; transform: translateY(12px); transition: opacity .55s, transform .55s;
+}
+.exp-item.on { opacity: 1; transform: none; }
+.exp-date { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.14em; color: var(--muted); text-transform: uppercase; margin-bottom: 0.4rem; }
+.exp-where { font-size: 0.7rem; color: var(--muted); }
+.exp-role { font-family: var(--serif); font-size: 1.35rem; font-weight: 400; margin-bottom: 0.2rem; }
+.exp-org { font-size: 0.75rem; font-weight: 500; color: var(--accent); margin-bottom: 0.9rem; letter-spacing: 0.04em; }
+.exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.exp-bullets li { font-size: 0.8rem; line-height: 1.7; color: var(--ink2); padding-left: 1.2rem; position: relative; }
+.exp-bullets li::before { content:'→'; position: absolute; left: 0; color: var(--accent2); font-size: 0.7rem; }
+.tag-row { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 1rem; }
+.tag { font-family: var(--mono); font-size: 0.52rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.6rem; border: 1px solid var(--border); border-radius: 2px; color: var(--muted); }
+
+/* LEADERSHIP */
+.lead-list { display: flex; flex-direction: column; }
+.lead-item {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 1.6rem 0; border-top: 1px solid var(--border); gap: 2rem;
+  opacity: 0; transform: translateX(-8px); transition: opacity .5s, transform .5s;
+}
+.lead-item.on { opacity: 1; transform: none; }
+.lead-role { font-size: 0.88rem; font-weight: 500; margin-bottom: 0.2rem; }
+.lead-org { font-size: 0.72rem; color: var(--muted); }
+.lead-detail { font-size: 0.75rem; color: var(--ink2); max-width: 46ch; line-height: 1.75; text-align: right; }
+
+/* CONTACT */
+.contact-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+.contact-heading {
+  font-family: var(--serif); font-size: clamp(3rem,7vw,7rem);
+  font-weight: 300; line-height: 0.9; letter-spacing: -0.01em;
+}
+.contact-heading em { font-style: italic; color: var(--accent); }
+.contact-links { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+.contact-link {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.4rem 1.5rem; background: var(--cream);
+  text-decoration: none; color: inherit; transition: background .2s;
+}
+.contact-link:hover { background: var(--warm); }
+.contact-link:hover .cl-arrow { transform: translate(3px,-3px); color: var(--accent); }
+.cl-label { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 0.2rem; }
+.cl-val { font-size: 0.88rem; color: var(--ink); }
+.cl-arrow { font-size: 1rem; color: var(--muted); transition: transform .2s, color .2s; }
+
+/* FOOTER */
+footer { padding: 1.5rem 2.5rem; display: flex; justify-content: space-between; align-items: center; }
+.f-copy { font-size: 0.62rem; letter-spacing: 0.1em; color: var(--muted); }
+.f-top { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color .2s; }
+.f-top:hover { color: var(--accent); }
+
+/* MOBILE */
+@media(max-width:800px){
+  nav { padding: 1.2rem 1.25rem; }
+  .nav-links li:nth-child(n+3) { display: none; }
+  .hero { padding: 7rem 1.25rem 3.5rem; }
+  .stats { grid-template-columns: 1fr 1fr; }
+  .stat { border-right: none; border-bottom: 1px solid var(--border); }
+  .about-grid, .edu-grid, .contact-wrap { grid-template-columns: 1fr; }
+  .about-heading { position: static; }
+  .exp-item { grid-template-columns: 1fr; gap: 0.6rem; }
+  .lead-item { flex-direction: column; }
+  .lead-detail { text-align: left; }
+  .section-inner { padding: 3.5rem 1.25rem; }
+  footer { padding: 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<!-- INTRO -->
+<div id="intro">
+  <div class="intro-inner">
+    <div style="overflow:hidden"><div class="intro-name">Huey Luu</div></div>
+    <div class="intro-bar"></div>
+    <div class="intro-sub">Software Engineer &nbsp;&middot;&nbsp; Carnegie Mellon</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">H. Luu</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-meta">
+    <div class="hero-dot"></div>
+    <span>Available for internships</span>
+    <span style="opacity:.3">&middot;</span>
+    <span>Union, New Jersey</span>
+  </div>
+  <h1 class="hero-h1">
+    Software<br>
+    engineer<br>
+    <span class="italic">&amp; builder.</span>
+  </h1>
+  <div class="hero-footer">
+    <p class="hero-desc">
+      Freshman at Carnegie Mellon Tepper. I build automation tools, databases, and web systems — with a focus on making things measurably faster and simpler.
+    </p>
+    <div class="hero-ctas">
+      <a href="#experience" class="btn btn-dark">View experience &rarr;</a>
+      <a href="#contact" class="btn btn-ghost">Get in touch</a>
+    </div>
+  </div>
+</header>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <div class="stat-num">4.0</div>
+    <div class="stat-label">GPA at CMU Tepper</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">75%</div>
+    <div class="stat-label">Processing time cut</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">Top 1%</div>
+    <div class="stat-label">Wharton Competition</div>
+  </div>
+  <div class="stat">
+    <div class="stat-num">50k+</div>
+    <div class="stat-label">FBLA impressions</div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span class="ticker-item">Python</span><span class="ticker-sep">&bull;</span>
+    <span class="ticker-item">Java</span><span class="ticker-sep">&bull;</span>
+    <span class="ticker-item">C / C++ / C#</span><span class="ticker-sep">&bull;</span>
+    <span class="ticker-item">SQL</span><span class="ticker-sep">&bull;</span>
+    <span class="ticker-item">VBA</span><span class="ticker-sep">&bull;</span>
+    <span class="ticker-item">HTML / CSS / JS</span><span class="ticker-sep">&bull;</span>
+    <span class="ticker-item">Excel</span><span class="ticker-sep">&bull;</span>
+    <span class="ticker-item">PMP Certified</span><span class="ticker-sep">&bull;</span>
+    <span class="ticker-item">OCP Java SE 8</span><span class="ticker-sep">&bull;</span>
+    <span class="ticker-item">Automation</span><span class="ticker-sep">&bull;</span>
+    <span class="ticker-item">Python</span><span class="ticker-sep">&bull;</span>
+    <span class="ticker-item">Java</span><span class="ticker-sep">&bull;</span>
+    <span class="ticker-item">C / C++ / C#</span><span class="ticker-sep">&bull;</span>
+    <span class="ticker-item">SQL</span><span class="ticker-sep">&bull;</span>
+    <span class="ticker-item">VBA</span><span class="ticker-sep">&bull;</span>
+    <span class="ticker-item">HTML / CSS / JS</span><span class="ticker-sep">&bull;</span>
+    <span class="ticker-item">Excel</span><span class="ticker-sep">&bull;</span>
+    <span class="ticker-item">PMP Certified</span><span class="ticker-sep">&bull;</span>
+    <span class="ticker-item">OCP Java SE 8</span><span class="ticker-sep">&bull;</span>
+    <span class="ticker-item">Automation</span><span class="ticker-sep">&bull;</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="s-tag">About</div>
+    <div class="about-grid">
+      <h2 class="about-heading">Who I<br><em>am.</em></h2>
+      <div class="reveal">
+        <p class="about-body">I'm a freshman at <strong>Carnegie Mellon University's Tepper School of Business</strong>, studying Business Administration with an additional major in Statistics &amp; Machine Learning. I started with a <strong>4.0 GPA</strong> and come in with a strong technical foundation — USAMO qualifier, USACO Platinum division, and AP Scholar with Distinction.</p>
+        <p class="about-body">This past summer I interned at <strong>VietDanSolutions</strong> in Ho Chi Minh City, where I built an automated invoicing system that cut processing time by 75%, wrote Python and C# tools that halved task time, and led a full company website redesign. I also developed and delivered a 3-month English curriculum to their engineering team.</p>
+        <p class="about-body">Beyond tech, I finished <strong>Top 1%</strong> in the Wharton Global Investment Competition, raised $20,000+ for humanitarian aid in Vietnam, and served as Student Council VP for four years. I care about building things that work and leading teams that ship.</p>
+        <div class="pill-row">
+          <span class="pill hi">Python</span><span class="pill hi">Java</span>
+          <span class="pill hi">C / C++ / C#</span><span class="pill hi">SQL</span>
+          <span class="pill hi">VBA</span><span class="pill hi">Automation</span>
+          <span class="pill lo">Statistics &amp; ML</span><span class="pill lo">Finance</span>
+          <span class="pill lo">Business</span><span class="pill lo">Leadership</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-inner">
+    <div class="s-tag">Education</div>
+    <div class="edu-grid">
+      <div class="edu-card">
+        <div class="edu-school">Carnegie Mellon<br>University</div>
+        <div class="edu-deg">B.S. Business Administration &middot; Additional Major in Statistics &amp; Machine Learning</div>
+        <div class="edu-gpa">GPA: 4.0 / 4.0 &nbsp;&middot;&nbsp; Aug 2026 &ndash; May 2030 &nbsp;&middot;&nbsp; Pittsburgh, PA</div>
+        <div class="edu-honors">
+          <span>Tepper School of Business</span>
+          <span>Accounting, Microeconomics, Business Science, Calculus</span>
+        </div>
+      </div>
+      <div class="edu-card">
+        <div class="edu-school">Academy for<br>Information Technology</div>
+        <div class="edu-deg">High School Diploma &mdash; GPA: 97/100 &middot; AP Scholar with Distinction</div>
+        <div class="edu-gpa">Sept 2022 &ndash; June 2026 &nbsp;&middot;&nbsp; Scotch Plains, NJ</div>
+        <div class="edu-honors">
+          <span>USAMO Qualifier 2025</span>
+          <span>USACO Platinum Division 2023</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-inner">
+    <div class="s-tag">Experience</div>
+    <div class="exp-list">
+
+      <div class="exp-item">
+        <div>
+          <div class="exp-date">Jun &ndash; Aug 2025</div>
+          <div class="exp-where">Ho Chi Minh City, Vietnam</div>
+        </div>
+        <div>
+          <div class="exp-role">Software Engineering &amp; Automation Intern</div>
+          <div class="exp-org">VietDanSolutions</div>
+          <ul class="exp-bullets">
+            <li>Engineered a fully automated invoicing system in VBA &mdash; reduced manual processing time by <strong>75%</strong></li>
+            <li>Built Python and C# automation tools that cut recurring task time by <strong>50%</strong></li>
+            <li>Designed and implemented a relational database for client information cataloguing</li>
+            <li>Led the redesign of the company&rsquo;s public-facing website</li>
+          </ul>
+          <div class="tag-row">
+            <span class="tag">Python</span><span class="tag">C#</span><span class="tag">VBA</span><span class="tag">SQL</span><span class="tag">Web Design</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div>
+          <div class="exp-date">Jun &ndash; Aug 2025</div>
+          <div class="exp-where">Ho Chi Minh City, Vietnam</div>
+        </div>
+        <div>
+          <div class="exp-role">Corporate Language Instructor</div>
+          <div class="exp-org">VietDanSolutions</div>
+          <ul class="exp-bullets">
+            <li>Developed and delivered a 3-month English curriculum for 10 engineering employees</li>
+            <li>Led daily 90-minute sessions covering technical terminology and cross-cultural business communication</li>
+          </ul>
+          <div class="tag-row">
+            <span class="tag">Curriculum Design</span><span class="tag">Instruction</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-item">
+        <div>
+          <div class="exp-date">Sep 2024 &ndash; Aug 2026</div>
+          <div class="exp-where">New York, NY</div>
+        </div>
+        <div>
+          <div class="exp-role">Teacher&rsquo;s Assistant</div>
+          <div class="exp-org">Mr. Li&rsquo;s Learning Center</div>
+          <ul class="exp-bullets">
+            <li>Delivered individualized instruction to <strong>100+ students</strong> (ages 5&ndash;18) in math, reading, and SAT/SHSAT prep</li>
+            <li>Designed and graded assignments, tracking measurable performance improvement across a diverse caseload</li>
+          </ul>
+          <div class="tag-row">
+            <span class="tag">Teaching</span><span class="tag">Math</span><span class="tag">SAT / SHSAT</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- LEADERSHIP -->
+<section id="leadership">
+  <div class="section-inner">
+    <div class="s-tag">Leadership &amp; Recognition</div>
+    <div class="lead-list">
+      <div class="lead-item">
+        <div>
+          <div class="lead-role">Wharton Global Investment Competition</div>
+          <div class="lead-org">Top 1% Finish &mdash; 2025</div>
+        </div>
+        <div class="lead-detail">Competed against teams globally and placed in the top 1% of all participants.</div>
+      </div>
+      <div class="lead-item">
+        <div>
+          <div class="lead-role">Student Council &mdash; Vice President</div>
+          <div class="lead-org">AIT &middot; 2022&ndash;2026</div>
+        </div>
+        <div class="lead-detail">Raised $10,000+ for senior programming. Planned and executed 30+ events over four years including prom, senior trip, and community service drives.</div>
+      </div>
+      <div class="lead-item">
+        <div>
+          <div class="lead-role">FBLA &mdash; Head of Outreach &amp; Webmaster</div>
+          <div class="lead-org">Future Business Leaders of America</div>
+        </div>
+        <div class="lead-detail">Built the chapter website (State Award of Merit). Grew outreach to 50,000+ impressions and doubled membership. Won 1st at State Conference in Financial Math &amp; Financial Statement Analysis.</div>
+      </div>
+      <div class="lead-item">
+        <div>
+          <div class="lead-role">Family Grassroots Charity</div>
+          <div class="lead-org">Fundraising &amp; Distribution Coordinator</div>
+        </div>
+        <div class="lead-detail">Raised $20,000+ from local Vietnamese-American businesses. Coordinated distribution of 30,000 kg of food, clothing, and water to underprivileged communities in Vietnam.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="s-tag">Contact</div>
+    <div class="contact-wrap">
+      <h2 class="contact-heading">Let&rsquo;s<br>work<br><em>together.</em></h2>
+      <div class="contact-links reveal">
+        <a href="mailto:hueyluu08@gmail.com" class="contact-link">
+          <div><span class="cl-label">Email</span><span class="cl-val">hueyluu08@gmail.com</span></div>
+          <span class="cl-arrow">&nearr;</span>
+        </a>
+        <a href="https://www.linkedin.com/in/huey-luu-140a19308/" target="_blank" class="contact-link">
+          <div><span class="cl-label">LinkedIn</span><span class="cl-val">linkedin.com/in/huey-luu</span></div>
+          <span class="cl-arrow">&nearr;</span>
+        </a>
+        <a href="https://github.com/HueyLuu" target="_blank" class="contact-link">
+          <div><span class="cl-label">GitHub</span><span class="cl-val">github.com/HueyLuu</span></div>
+          <span class="cl-arrow">&nearr;</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span class="f-copy">&copy; 2026 Huey Luu. All rights reserved.</span>
+  <a href="#" class="f-top">Back to top &uarr;</a>
+</footer>
+
+<script>
+// cursor
+const cur = document.getElementById('cur');
+const ring = document.getElementById('cur-ring');
+let mx=0, my=0, rx=0, ry=0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
+(function tick(){
+  rx += (mx-rx)*0.12; ry += (my-ry)*0.12;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(tick);
+})();
+document.querySelectorAll('a,button,.pill,.contact-link').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ ring.style.width=ring.style.height='52px'; });
+  el.addEventListener('mouseleave',()=>{ ring.style.width=ring.style.height='32px'; });
+});
+
+// intro out
+const intro = document.getElementById('intro');
+intro.classList.add('out');
+intro.addEventListener('animationend', ()=>intro.style.display='none');
+
+// reveal on scroll
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('on'); });
+},{threshold:0.1});
+document.querySelectorAll('.reveal,.stat,.exp-item,.edu-card,.lead-item').forEach(el=>obs.observe(el));
+
+// smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
+  });
+});
+</script>
+</body>
+</html>
